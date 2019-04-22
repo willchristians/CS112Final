@@ -4,6 +4,9 @@ import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Dimension;
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
 
 public abstract class Sprite{
 	public int xCoord;
@@ -11,8 +14,8 @@ public abstract class Sprite{
 	public int xSubCoord;
 	public int ySubCoord;
 	public Map m;
-	
-	public abstract void draw(Graphics g);
+
+	public abstract void draw(Graphics g, JFrame frame);
 	
 }
 
@@ -26,15 +29,22 @@ class Player extends Sprite{
 		this.m = m;
 	}
 	
-	public void draw(Graphics g){
+	public void draw(Graphics g, JFrame frame){
+		BufferedImage me = null;
+		try {
+    		me = ImageIO.read(new File("Sprite.png"));
+		} 
+		catch (IOException e){};
+
 		int bigw = m.HEIGHT/m.size;
 		int lilw = bigw/3;
 		int xPix = xCoord*bigw + xSubCoord*lilw;
 		int yPix = yCoord*bigw + ySubCoord*lilw;
-		g.setColor(Color.WHITE);
+		//g.setColor(Color.WHITE);
 		//System.out.println(bigw + ", " + lilw);
 		//System.out.println(xPix + ", " + yPix);
-		g.fillOval(xPix,yPix,lilw,lilw);
+		//g.fillOval(xPix,yPix,lilw,lilw);
+		g.drawImage(me, xPix, yPix, lilw, lilw, frame);
 		drawBlindness(g,2);
 	}
 	

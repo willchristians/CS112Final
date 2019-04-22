@@ -67,7 +67,7 @@ public class MazeGame extends JPanel implements KeyListener{
 	public static void startGame(char enterCode){
 		int size = 3;
 		long seed = rand.nextInt(1000);
-		map = new Map(size,seed,WIDTH,HEIGHT);
+		map = new Map(size,seed,WIDTH,HEIGHT, frame);
 		player = map.player;
 		
 		MazeGame mainInstance = new MazeGame();
@@ -90,7 +90,7 @@ public class MazeGame extends JPanel implements KeyListener{
     }
 
 	public static void levelUp(){
-		map = new Map(map.size+1,rand.nextInt(100000),WIDTH,HEIGHT);
+		map = new Map(map.size+1,rand.nextInt(100000),WIDTH,HEIGHT, frame); //bla
 		player = map.player;
 	}
 }

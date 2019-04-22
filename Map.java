@@ -13,8 +13,10 @@ public class Map{
 	public int HEIGHT;
 	public int WIDTH;
 	public Player player;
+
+	public static JFrame frame;
 	
-	public Map(int size, long seed, int W, int H){
+	public Map(int size, long seed, int W, int H, JFrame frame){
 		this.size = size;
 		grid = new Tile[size][size];
 		this.seed = seed;
@@ -22,12 +24,13 @@ public class Map{
 		WIDTH = W;
 		HEIGHT = H;
 		this.build();
+		this.frame = frame;
 	}
 	
 	private void build(){
 		for(int i = 0; i<size; i++) //initiallizes all tiles
 			for(int j = 0; j<size; j++)
-				grid[j][i] = new Tile(j,i,-1);
+				grid[j][i] = new Tile(j,i,-1, frame); //bla
 			
 		for(int i = 0; i<size; i++)
 			for(int j = 0; j<size; j++){
@@ -59,8 +62,8 @@ public class Map{
 		
 		for (int i = 0;i<size; i++)			
 			for(int j = 0; j<size; j++)
-				if(rand.nextInt(size/2) == 0 && grid[j][i].type == 1){
-					grid[j][i].subtiles[1][1].makeGoal();
+				if(rand.nextInt(size/2) == 0 && grid[i][j].type == 1){
+					grid[i][j].subtiles[1][1].makeGoal();
 					return;
 				}
 				
@@ -72,7 +75,7 @@ public class Map{
 			for(int j = 0; j<size; j++)
 				grid[j][i].draw(g,size,HEIGHT,WIDTH);
 			
-		player.draw(g);
+		player.draw(g, frame);
 	}
 	
 	private void pruneHallways(){
