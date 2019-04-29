@@ -13,8 +13,8 @@ import java.awt.event.KeyEvent;
 //used https://docs.oracle.com/javase/tutorial/2d/images/drawimage.html
 
 public class MainMenu extends JPanel implements KeyListener{
-	public static final int WIDTH = 1152;
-    public static final int HEIGHT = 648;
+	public static final int WIDTH = 800;
+    public static final int HEIGHT = 850;
 	
 	public static void main(String[] args){
 		JFrame frame = new JFrame("MazeGame");

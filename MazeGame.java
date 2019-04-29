@@ -11,20 +11,26 @@ import java.awt.event.KeyEvent;
 public class MazeGame extends JPanel implements KeyListener{
 	
 	public static final int WIDTH = 800;
-    public static final int HEIGHT = 800;
+    public static final int HEIGHT = 850;
     public static final int FPS = 60;
 	public static Map map;
 	public static Player player;
 	public static Random rand = new Random();
 	public static JFrame frame = new JFrame("MazeGame");
+	public double time;
 	
 	class Runner implements Runnable{ //from lab8
 		
 		public void run(){
+			time = 0;
 			while(true) {
 				repaint();
 				try {
 					Thread.sleep(1000/FPS);
+					time += 1.0/FPS;
+					if((int)(time*FPS)%30==0){
+						player.chaser.update();
+					}
 				}
 				catch(InterruptedException e){}
 			}
@@ -67,7 +73,7 @@ public class MazeGame extends JPanel implements KeyListener{
 	public static void startGame(char enterCode){
 		int size = 3;
 		long seed = rand.nextInt(1000);
-		map = new Map(size,seed,WIDTH,HEIGHT, frame);
+		map = new Map(size,seed,WIDTH,HEIGHT-50, frame);
 		player = map.player;
 		
 		MazeGame mainInstance = new MazeGame();
@@ -79,7 +85,7 @@ public class MazeGame extends JPanel implements KeyListener{
 	public void paintComponent(Graphics g) {
         g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-		map.draw(g);
+		map.draw(g, time);
 	}
 
 	public MazeGame(){
@@ -90,7 +96,7 @@ public class MazeGame extends JPanel implements KeyListener{
     }
 
 	public static void levelUp(){
-		map = new Map(map.size+1,rand.nextInt(100000),WIDTH,HEIGHT, frame); //bla
+		map = new Map(map.size+1,rand.nextInt(100000),WIDTH,HEIGHT-50, frame);
 		player = map.player;
 	}
 }
