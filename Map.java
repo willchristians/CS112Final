@@ -75,10 +75,9 @@ public class Map{
 	}
 	
 	public void draw(Graphics g, double time){
-		for(int i = 0; i<size; i++)
-			for(int j = 0; j<size; j++)
-				grid[j][i].draw(g,size,HEIGHT,WIDTH);
-			
+		for(int i = player.yCoord-2; i<player.yCoord+2 && i<size; i++)
+			for(int j = player.xCoord-2; j<player.xCoord+2 && j<size; j++)
+				if(i>=0 && j>=0) grid[j][i].draw(g,size,HEIGHT,WIDTH);
 		player.draw(g, frame);
 		player.chaser.draw(g, frame);
 		drawInfo(time, g);
