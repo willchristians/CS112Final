@@ -74,14 +74,14 @@ public class Map{
 		genGoal();
 	}
 	
-	public void draw(Graphics g, double time){
+	public void draw(Graphics g){
 		for(int i = player.yCoord-2; i<player.yCoord+2 && i<size; i++)
 			for(int j = player.xCoord-2; j<player.xCoord+2 && j<size; j++)
 				if(i>=0 && j>=0) grid[j][i].draw(g,size,HEIGHT,WIDTH);
-		player.initBlindness(HEIGHT/size/3);
+		player.initBlindness(g, HEIGHT/size/3);
 		player.draw(g, frame);
 		player.chaser.draw(g, frame);
-		drawInfo(time, g);
+		drawInfo(g);
 	}
 	
 	private void pruneHallways(){
@@ -105,7 +105,8 @@ public class Map{
 		System.out.println();
 	}
 
-	public void drawInfo(double t, Graphics g){
+	public void drawInfo(Graphics g){
+		double t = MazeGame.time;
 		BufferedImage bar = null;
 		try {
     		bar = ImageIO.read(new File("ImageBar.png"));
@@ -118,14 +119,12 @@ public class Map{
 		*/
 		Font myFont = new Font("Helvetica", Font.PLAIN, 18);
 		g.setFont(myFont);
-		int minutes = 0;
-		while(t>60){
-			minutes++;
-			t-=60;
-		}
-		String sTime = minutes + " minutes and " + (int)t + " seconds elapsed.";
+		int minutes = (int)(t/60);
+		t = t%60;
+		String sTime = minutes + " minutes and " + (int)t + " seconds";
 		g.setColor(Color.BLACK);
 		g.drawString(sTime, 10, HEIGHT + 30);
+		g.drawString("Score: " + MazeGame.score, 500, HEIGHT + 30);
 	}
 
 }
