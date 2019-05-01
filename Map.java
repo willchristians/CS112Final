@@ -78,6 +78,7 @@ public class Map{
 		for(int i = player.yCoord-2; i<player.yCoord+2 && i<size; i++)
 			for(int j = player.xCoord-2; j<player.xCoord+2 && j<size; j++)
 				if(i>=0 && j>=0) grid[j][i].draw(g,size,HEIGHT,WIDTH);
+		player.initBlindness(g, HEIGHT/size/3);
 		player.draw(g, frame);
 		player.chaser.draw(g, frame);
 		drawInfo(time, g);

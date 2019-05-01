@@ -16,6 +16,8 @@ public class Subtile extends Tile {
 
 	public static JFrame frame;
 
+	public int blindness; //0 for all bright, 1 for dim, 2 for black
+
 	//public Subtile north;
 	/*
 	public Tile south;
@@ -40,8 +42,10 @@ public class Subtile extends Tile {
 		yPos = y;
 		show = b;
 		this.frame = frame;
+		blindness = 2;
 		//north = t.north;
 	}
+
 	
 public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, BufferedImage c1, BufferedImage c2, JFrame frame){
 		
@@ -51,7 +55,7 @@ public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, Buf
 		int yPix = parent.yPos*pwidth + yPos*width;
 		int lumwidth;
 		rand.setSeed((int)((xPix+1)*(yPix+1)));
-		if (!show){ //graphics would happen here
+		if (!show && blindness != 2){ //graphics would happen here
 			g.drawImage(brick, xPix, yPix, width, width, frame);
 			g.setColor(moss);
 			int xcoord; int ycoord; int widthOval;
@@ -61,7 +65,7 @@ public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, Buf
 				g.fillOval(xcoord, ycoord, widthOval, widthOval);
 			}
 		} 
-		else if (isGoal){
+		else if (isGoal && blindness != 2){
 			//g.setColor(Color.YELLOW);
 			//g.fillRect(xPix,yPix,width,width);
 			drawCarpet(xPix, yPix, width, c1, c2, frame, g);
@@ -72,7 +76,7 @@ public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, Buf
 			catch (IOException e){};
 			g.drawImage(head, (int)(xPix-width/3), (int)(yPix-width/3), width+width/3, width+width/3, frame);
 		}
-		else{
+		else if (blindness != 2){
 			drawCarpet(xPix, yPix, width, c1, c2, frame, g);
 			/*
 			int whereX = xPix;

@@ -113,38 +113,69 @@ class Player extends Sprite{
 		//System.out.println(xPix + ", " + yPix);
 		//g.fillOval(xPix,yPix,lilw,lilw);
 		g.drawImage(me, xPix, yPix, lilw, lilw, frame);
+		initBlindness(g, lilw);
 		drawBlindness(g, lilw);
 	}
 	
-	private void drawBlindness(Graphics g, int width){
+	public void initBlindness(Graphics g, int width){
 
 		int widthConst = m.grid.length; // helps for sizing
+
 		int locX; int locY; double distFrom; // will calculate for each tile
+
+		int subCount = 0;
+
 		int myLocX = m.grid[xCoord][0].xPos*(m.WIDTH/widthConst) + m.grid[xCoord][yCoord].subtiles[xSubCoord][0].xPos*width; // my location as coordinates
 		int myLocY = m.grid[xCoord][yCoord].yPos*(m.WIDTH/widthConst) + m.grid[xCoord][yCoord].subtiles[xSubCoord][ySubCoord].yPos*width; //my location as coordinates
-		boolean isBlind;
 
 		for(Tile [] tileArray : m.grid){
 			for(Tile t : tileArray){
 				for(Subtile[] subArray : t.subtiles){
-					for(Subtile sub : subArray){
+					for(Subtile sub : subArray){ //this series of for-each loops accesses every subtile
+
 						locX = t.xPos*(m.WIDTH/widthConst) + sub.xPos*width;
 						locY = t.yPos*(m.HEIGHT/widthConst) + sub.yPos*width;
 						distFrom = Math.sqrt((locX - myLocX)*(locX - myLocX) + (locY - myLocY)*(locY - myLocY)); //gets distance from every tile to me
-						isBlind = true;
+
 						if(distFrom < width*2){
-							if(sub.show)isBlind = false;
-							else g.setColor(lightDim);
+							if(sub.show) sub.blindness = 0;
+							else sub.blindness = 1;
 						}
-						if(distFrom < width*2.5){
-							g.setColor(dim);
-							if(!sub.show && distFrom > width*2) g.setColor(blind);
+						else if(distFrom < width*2.5){
+							if(!sub.show && distFrom > width*2);
+							else sub.blindness = 1;
 						}
-						else g.setColor(blind);
-						if(isBlind) g.fillRect(locX, locY, width + 2, width + 2);
+						else sub.blindness = 2;
+
 					}
 				}
 			}
+		}
+
+	}
+
+	private void drawBlindness(Graphics g, int width){
+
+		int widthConst = m.grid.length; // helps for sizing
+
+		int locX; int locY; int bigX; int bigY;
+
+		for(Tile [] tileArray : m.grid){
+			for(Tile t : tileArray){
+				for(Subtile[] subArray : t.subtiles){
+					for(Subtile sub : subArray){ //this series of for-each loops accesses every subtile
+
+						locX = t.xPos*(m.WIDTH/widthConst) + sub.xPos*width;
+						locY = t.yPos*(m.HEIGHT/widthConst) + sub.yPos*width;
+
+						if(sub.blindness == 1) g.setColor(dim);
+						else if(sub.blindness == 2) g.setColor(blind);
+						//^At first I didn't draw any of the blind rectangles, but the processing delay made the graphics look wonky
+
+						if(sub.blindness !=0 ) g.fillRect(locX, locY, width + 2, width + 2);
+					}
+				}
+			}	
 		}
 
 	}
@@ -179,14 +210,21 @@ class Chaser extends Sprite{
 	}
 	
 	public void draw(Graphics g, JFrame frame){
+
+		BufferedImage me = null;
+		try {
+    		me = ImageIO.read(new File("Chaser.png"));
+		} 
+		catch (IOException e){};
+
+
 		int bigw = m.HEIGHT/m.size;
 		int lilw = bigw/3;
 		int xPix = xCoord*bigw + xSubCoord*lilw;
 		int yPix = yCoord*bigw + ySubCoord*lilw;
-		g.setColor(Color.WHITE);
 		//System.out.println(bigw + ", " + lilw);
 		//System.out.println(xPix + ", " + yPix);
-		g.fillOval(xPix,yPix,lilw,lilw);
+		g.drawImage(me, xPix, yPix, lilw, lilw, frame);
 	}
 	
 	public void update(){
