@@ -113,11 +113,11 @@ class Player extends Sprite{
 		//System.out.println(xPix + ", " + yPix);
 		//g.fillOval(xPix,yPix,lilw,lilw);
 		g.drawImage(me, xPix, yPix, lilw, lilw, frame);
-		initBlindness(g, lilw);
+		initBlindness(lilw);
 		drawBlindness(g, lilw);
 	}
 	
-	public void initBlindness(Graphics g, int width){
+	public void initBlindness(int width){
 
 		int widthConst = m.grid.length; // helps for sizing
 
@@ -128,6 +128,8 @@ class Player extends Sprite{
 		int myLocX = m.grid[xCoord][0].xPos*(m.WIDTH/widthConst) + m.grid[xCoord][yCoord].subtiles[xSubCoord][0].xPos*width; // my location as coordinates
 		int myLocY = m.grid[xCoord][yCoord].yPos*(m.WIDTH/widthConst) + m.grid[xCoord][yCoord].subtiles[xSubCoord][ySubCoord].yPos*width; //my location as coordinates
 
+		boolean atChaser = chaser.getChaser() == m.grid[xCoord][yCoord].subtiles[xSubCoord][ySubCoord];
+
 		for(Tile [] tileArray : m.grid){
 			for(Tile t : tileArray){
 				for(Subtile[] subArray : t.subtiles){
@@ -137,11 +139,11 @@ class Player extends Sprite{
 						locY = t.yPos*(m.HEIGHT/widthConst) + sub.yPos*width;
 						distFrom = Math.sqrt((locX - myLocX)*(locX - myLocX) + (locY - myLocY)*(locY - myLocY)); //gets distance from every tile to me
 
-						if(distFrom < width*2){
+						if(!atChaser && distFrom < width*2){
 							if(sub.show) sub.blindness = 0;
 							else sub.blindness = 1;
 						}
-						else if(distFrom < width*2.5){
+						else if(!atChaser && distFrom < width*2.5){
 							if(!sub.show && distFrom > width*2);
 							else sub.blindness = 1;
 						}
@@ -241,4 +243,6 @@ class Chaser extends Sprite{
 		
 		
 	}
+
+	public Subtile getChaser(){return m.grid[xCoord][yCoord].subtiles[xSubCoord][ySubCoord];}
 }

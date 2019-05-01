@@ -127,7 +127,7 @@ public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, Buf
 
 	*/
 
-	public void drawCarpet(int xPix, int yPix, int width, BufferedImage c1, BufferedImage c2, JFrame frame, Graphics g){
+	private void drawCarpet(int xPix, int yPix, int width, BufferedImage c1, BufferedImage c2, JFrame frame, Graphics g){
 		int whereX = xPix;
 		int whereY = yPix;
 		BufferedImage carpet = c1;
@@ -145,7 +145,7 @@ public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, Buf
 	}
 
 
-	public BufferedImage changeCarpet(BufferedImage carpet, BufferedImage c1, BufferedImage c2){
+	private BufferedImage changeCarpet(BufferedImage carpet, BufferedImage c1, BufferedImage c2){
 		if(carpet == c1) carpet = c2;
 		else carpet = c1;
 		return carpet;
