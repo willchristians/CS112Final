@@ -77,12 +77,12 @@ public class Map{
 
 	public void genLumTiles(int count){
 
-	if(count < 1 + (int)(.2*size)){
+	if(count < 1 + (int)(.1*size)){
 		for(Tile [] tileArray : grid)
 			for(Tile t : tileArray)
 				for(Subtile[] subArray : t.subtiles)
 					for(Subtile sub : subArray)
-						if(sub.show && rand.nextInt(100) == 1){
+						if(sub.show && rand.nextInt(200) == 1){
 							sub.makeLS();
 							genLumTiles(count+1);
 							return;
