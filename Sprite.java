@@ -138,8 +138,9 @@ class Player extends Sprite{
 						locX = t.xPos*(m.WIDTH/widthConst) + sub.xPos*width;
 						locY = t.yPos*(m.HEIGHT/widthConst) + sub.yPos*width;
 						distFrom = Math.sqrt((locX - myLocX)*(locX - myLocX) + (locY - myLocY)*(locY - myLocY)); //gets distance from every tile to me
-
-						if(!atChaser && distFrom < width*2){
+						
+						if(this.isAtLS()) sub.blindness = 0;
+						else if(!atChaser && distFrom < width*2){
 							if(sub.show) sub.blindness = 0;
 							else sub.blindness = 1;
 						}
@@ -148,7 +149,6 @@ class Player extends Sprite{
 							else sub.blindness = 1;
 						}
 						else sub.blindness = 2;
-
 					}
 				}
 			}
@@ -180,6 +180,10 @@ class Player extends Sprite{
 			}	
 		}
 
+	}
+
+	public boolean isAtLS(){
+		return m.grid[xCoord][yCoord].subtiles[xSubCoord][ySubCoord].isLS;
 	}
 	
 	public void move(char c){

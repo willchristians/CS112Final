@@ -59,6 +59,7 @@ public class Map{
 		player = new Player(this,size/2,size-1,1,1);
 		
 		genGoal();
+		genLumTiles(0);
 	}
 	
 	private void genGoal(){
@@ -73,11 +74,36 @@ public class Map{
 				
 		genGoal();
 	}
+
+	public void genLumTiles(int count){
+
+	if(count < 1 + (int)(.2*size)){
+		for(Tile [] tileArray : grid)
+			for(Tile t : tileArray)
+				for(Subtile[] subArray : t.subtiles)
+					for(Subtile sub : subArray)
+						if(sub.show && rand.nextInt(100) == 1){
+							sub.makeLS();
+							genLumTiles(count+1);
+							return;
+						}
+	}
+		
+	}
 	
 	public void draw(Graphics g){
-		for(int i = player.yCoord-2; i<player.yCoord+2 && i<size; i++)
-			for(int j = player.xCoord-2; j<player.xCoord+2 && j<size; j++)
-				if(i>=0 && j>=0) grid[j][i].draw(g,size,HEIGHT,WIDTH);
+		//player.yCoord-2; i<player.yCoord+2 && 
+		//player.xCoord-2; j<player.xCoord+2 &&
+		if(player.isAtLS()){
+			for(int i = 0; i<size; i++)
+				for(int j = 0; j<size; j++)
+					if(i>=0 && j>=0) grid[j][i].draw(g,size,HEIGHT,WIDTH);
+		}
+		else{
+			for(int i = player.yCoord-2; i<player.yCoord+2 && i<size; i++)
+				for(int j = player.xCoord-2; j<player.xCoord+2 && j<size; j++)
+					if(i>=0 && j>=0) grid[j][i].draw(g,size,HEIGHT,WIDTH);
+		}
 		player.initBlindness(g, HEIGHT/size/3);
 		player.draw(g, frame);
 		player.chaser.draw(g, frame);

@@ -16,7 +16,8 @@ public class Subtile extends Tile {
 
 	public static JFrame frame;
 
-	public int blindness; //0 for all bright, 1 for dim, 2 for black
+	public int blindness = 0; //0 for all bright, 1 for dim, 2 for black
+	public boolean isLS = false; //is Light Subtile; lights up the whole maze
 
 	//public Subtile north;
 	/*
@@ -42,7 +43,6 @@ public class Subtile extends Tile {
 		yPos = y;
 		show = b;
 		this.frame = frame;
-		blindness = 2;
 		//north = t.north;
 	}
 
@@ -76,6 +76,15 @@ public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, Buf
 			catch (IOException e){};
 			g.drawImage(head, (int)(xPix-width/3), (int)(yPix-width/3), width+width/3, width+width/3, frame);
 		}
+		else if(isLS && blindness != 2){
+			BufferedImage lSub = null;
+			try {
+    			lSub = ImageIO.read(new File("LSub.jpg"));
+			} 
+			catch (IOException e){};
+
+			g.drawImage(lSub,xPix,yPix,width,width, frame);
+		}
 		else if (blindness != 2){
 			drawCarpet(xPix, yPix, width, c1, c2, frame, g);
 			/*
@@ -107,6 +116,10 @@ public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, Buf
 	
 	public void makeGoal(){
 		this.isGoal = true;
+	}
+
+	public void makeLS(){
+		this.isLS = true;
 	}
 
 	public void drawTorches(Random rand, Random rand2, int xPix, int yPix, int lumwidth, Graphics g){
