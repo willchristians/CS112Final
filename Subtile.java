@@ -19,12 +19,6 @@ public class Subtile extends Tile {
 	public int blindness = 0; //0 for all bright, 1 for dim, 2 for black
 	public boolean isLS = false; //is Light Subtile; lights up the whole maze
 
-	//public Subtile north;
-	/*
-	public Tile south;
-	public Tile east;
-	public Tile west;
-	*/
 
 	public Color brickLight = new Color(100, 110, 110);
 	public Color brickDark = new Color(90, 65, 62);
@@ -43,7 +37,6 @@ public class Subtile extends Tile {
 		yPos = y;
 		show = b;
 		this.frame = frame;
-		//north = t.north;
 	}
 
 	
@@ -66,8 +59,6 @@ public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, Buf
 			}
 		} 
 		else if (isGoal && blindness != 2){
-			//g.setColor(Color.YELLOW);
-			//g.fillRect(xPix,yPix,width,width);
 			drawCarpet(xPix, yPix, width, c1, c2, frame, g);
 			BufferedImage head = null;
 			try {
@@ -87,30 +78,6 @@ public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, Buf
 		}
 		else if (blindness != 2){
 			drawCarpet(xPix, yPix, width, c1, c2, frame, g);
-			/*
-			int whereX = xPix;
-			int whereY = yPix;
-			for(int i = 0; i<5; i++){
-				whereX = xPix;
-				for(int j = 0; j<5; j++){
-
-					g.drawImage(carpet, whereX, whereY, width/5 +4, width/5+4, frame);
-					carpet = changeCarpet(carpet, c1, c2);
-					
-					//g = changeColor(g);
-					//g.fillRect(whereX, whereY, width/5 + 4, width/5 + 4); // adjusts so no black lines
-					
-					whereX += width/5;
-				}
-				whereY += width/5;
-			}
-			*/
-			/*
-			if(this.isWallTile() && rand.nextInt(6) == 1){
-				drawTorches(rand, rand2, xPix, yPix, pwidth/8 + rand2.nextInt(5), g);
-			}
-			*/
-			//^this will work much better once the neighbors function has been worked out
 		}
 	}
 	
@@ -130,15 +97,7 @@ public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, Buf
 		g.setColor(luminate);
 		g.fillOval(xPix, yPix, lumwidth, lumwidth);
 	}
-	/*
 
-	public Graphics changeColor(Graphics g){
-		if(g.getColor() == hall1) g.setColor(hall2);
-		else g.setColor(hall1);
-		return g;
-	}
-
-	*/
 
 	public void drawCarpet(int xPix, int yPix, int width, BufferedImage c1, BufferedImage c2, JFrame frame, Graphics g){
 		int whereX = xPix;
@@ -163,15 +122,5 @@ public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, Buf
 		else carpet = c1;
 		return carpet;
 	}
-/*
-	public boolean isWallTile(){
-		int count = 0;
-		if(this.south.show)count ++;
-		if(this.north.show)count++;
-		if(this.west.show)count++;
-		if(this.east.show)count++;
-		if(count<4) return true;
-	}
-	*/
 }
 
