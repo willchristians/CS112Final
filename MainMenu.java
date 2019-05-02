@@ -3,11 +3,13 @@ import javax.swing.JPanel;
 import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
 import java.util.Scanner;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Dimension;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -18,10 +20,12 @@ import java.awt.event.KeyEvent;
 //https://docs.oracle.com/javase/7/docs/api/java/lang/String.html
 //https://docs.oracle.com/javase/7/docs/api/java/io/PrintWriter.html
 //http://home.wlu.edu/~lambertk/hsjava/whatsnew/input.html
+//https://stackoverflow.com/questions/2168963/use-java-drawstring-to-achieve-the-following-text-alignment
 
 public class MainMenu extends JPanel implements KeyListener{
 	public static final int WIDTH = 800;
     public static final int HEIGHT = 850;
+    public Color fontColor = new Color (153, 255, 0);
 	public char currentScreen = 'm';
 	
 	public static void main(String[] args){
@@ -87,16 +91,21 @@ public class MainMenu extends JPanel implements KeyListener{
 				board.add(name,score);
 			}
 			
-			Font myFont = new Font("Courier", Font.PLAIN, 18);
+			Font myFont = new Font("Impact", Font.PLAIN, 25);
+
 			g.setFont(myFont);
-			g.setColor(Color.BLACK);
+			g.setColor(fontColor);
+
+			FontMetrics fontMetrics = g.getFontMetrics();
 		
 			for(int i = 0; i<board.size(); i++){
-				int y = 200 + 25*i;
+				int y = 200 + 35*i;
 				Pair p = board.get(i);
 				
-				String s = String.format("%2d. %-16s %16d",i,p.x,p.y);
-				g.drawString(s, 200, y);
+				String s1 = String.format("%5d. %-16s",i,p.x);
+				String s2 = "" + p.y;
+				g.drawString(s1, 180, y);
+				g.drawString(s2, WIDTH - 200 - fontMetrics.stringWidth(s2), y);
 			}
 			inFile.close();
 		} catch (FileNotFoundException E) {
@@ -109,7 +118,7 @@ public class MainMenu extends JPanel implements KeyListener{
         char c=e.getKeyChar();
 		if (currentScreen == 'm') {
 			switch(c) {
-				case '0' :
+				case '1' :
 					System.out.println("viewing how to play");
 					currentScreen = 'h';
 					repaint();
