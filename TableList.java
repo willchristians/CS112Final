@@ -4,12 +4,12 @@ import java.util.ArrayList;
 public class TableList{
 	private ArrayList<Pair> list = new ArrayList<Pair>();
 	
-	public void add(String x, int y){
+	public void add(String x, int y){ //adds a pair
 		Pair toAdd = new Pair(x,y);
 		list.add(toAdd);
 	}
 	
-	public void sort(){
+	public void sort(){ //sorts tablelist from highest score to lowest score. Makes leaderboard printing work.
 		
 		ArrayList<Pair> sorted = new ArrayList<Pair>();
 		int times = list.size();
@@ -31,17 +31,17 @@ public class TableList{
 		
 	}
 	
-	public Pair get(int i){
+	public Pair get(int i){ 
 		return list.get(i);
 	}
 	
-	public int size(){
+	public int size(){ 
 		return list.size();
 	}
 }
 class Pair{
-	public String x;
-	public int y;
+	public String x; //name
+	public int y; //score
 	
 	public Pair(String s, int i){
 		x = s;

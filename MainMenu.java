@@ -26,7 +26,7 @@ public class MainMenu extends JPanel implements KeyListener{
 	public static final int WIDTH = 800;
     public static final int HEIGHT = 850;
     public Color fontColor = new Color (153, 255, 0);
-	public char currentScreen = 'm';
+	public char currentScreen = 'm'; //m main menu; l leaderboard; h how to play; o game over
 	
 	public static void main(String[] args){
 		/*
@@ -88,17 +88,17 @@ public class MainMenu extends JPanel implements KeyListener{
 		try {
 			Scanner inFile = new Scanner(new File("leaderboard.txt"));
 			
-			TableList board = new TableList();
+			TableList board = new TableList();//this is the leaderboard
 		
 			while (inFile.hasNextLine()){
 				String name = inFile.nextLine();
 				int score = inFile.nextInt();
 				if (inFile.hasNextLine())
 					inFile.nextLine();
-				board.add(name,score);
+				board.add(name,score); //add to leaderboard
 			}
 			
-			Font myFont = new Font("Impact", Font.PLAIN, 25);
+			Font myFont = new Font("Impact", Font.PLAIN, 25);  //our aesthetic is impact
 
 			g.setFont(myFont);
 			g.setColor(fontColor);
@@ -109,10 +109,10 @@ public class MainMenu extends JPanel implements KeyListener{
 				int y = 200 + 35*i;
 				Pair p = board.get(i);
 				
-				String s1 = String.format("%5d. %-16s",i+1,p.x);
-				String s2 = "" + p.y;
-				g.drawString(s1, 180, y);
-				g.drawString(s2, WIDTH - 200 - fontMetrics.stringWidth(s2), y);
+				String s1 = String.format("%5d. %-16s",i+1,p.x); //name
+				String s2 = "" + p.y; //score
+				g.drawString(s1, 180, y); //draw s1 at 180
+				g.drawString(s2, WIDTH - 200 - fontMetrics.stringWidth(s2), y); //draw s2 at right = width-200
 			}
 			inFile.close();
 		} catch (FileNotFoundException E) {
@@ -121,7 +121,7 @@ public class MainMenu extends JPanel implements KeyListener{
 		
 	}
 	
-	public void keyPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent e) { //interact with menu here
         char c=e.getKeyChar();
 		if (currentScreen == 'm') {
 			switch(c) {
@@ -146,13 +146,16 @@ public class MainMenu extends JPanel implements KeyListener{
 				default :
 					break;
 			}
-		} else if (currentScreen == 'h' || currentScreen == 'l'){
-			if (c == 'b') {
+		} else if (currentScreen == 'h' || currentScreen == 'l'){ //at leaderboard or howtoplay
+			if (c == 'b') { //go back
 				currentScreen = 'm';
 				repaint();
 			}
 		}
     }
+    
+    /*below: Used to read input from the user, calls startGame with the enter code (1,2,3,etc.). 
+    keyPressed is the one that actually does something.*/
 	
 	public void keyReleased(KeyEvent e) {
     }

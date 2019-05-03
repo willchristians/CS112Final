@@ -18,30 +18,29 @@ public class MazeGame extends JPanel implements KeyListener{
 	public static final int WIDTH = 800;
     public static final int HEIGHT = 850;
     public static final int FPS = 60;
-	public static Map map;
-	public static Player player;
+	public static Map map; //map we load. Updated at start and in levelup
+	public static Player player; //me
 	public static Random rand = new Random();
 	public static JFrame frame = new JFrame("DUNGEON CRAWL");
-	public static double time;
-	public static double timechange;
+	public static double time; //either elapsed or remaining, in seconds
+	public static double timechange; //used in run in runner. change in time per frame
 	public static int score;
-	private static int chaserspeed = 35;
+	private static int chaserspeed = 35; //number of frames b/t chaser's moves, changes upon levelup
 	private static Scanner keyboard = new Scanner(System.in);
 	
 	class Runner implements Runnable{ //from lab8
 		
-		public void run(){
-			//time = 0;
+		public void run(){ //repeatedly called to update graphics
 			while(true) {
 				repaint();
 				try {
 					Thread.sleep(1000/FPS);
 					time += timechange;
 					if((int)(time*FPS)%chaserspeed==0){
-						player.chaser.update();
+						player.chaser.update(); //chaser moved here
 						score += 5;
 					}
-					if (time<0){
+					if (time<0){ //game ends here
 						MainMenu Menu = new MainMenu();
 						Menu.currentScreen = 'o';
 						frame.setContentPane(Menu);	
@@ -58,6 +57,10 @@ public class MazeGame extends JPanel implements KeyListener{
 		}	
 	}
 	
+	/* Below three methods:
+	All methods used when implementing keyListener so the program can read input and move the player sprite. 
+	keyTyped is the method that actually moves the player sprite. */
+
 	public void keyPressed(KeyEvent e) {
         char c=e.getKeyChar();
 		player.move(c);
@@ -79,7 +82,7 @@ public class MazeGame extends JPanel implements KeyListener{
         requestFocus();
     }
 	
-	public static void main(String[] args){
+	public static void main(String[] args){ //displays main menu and implements graphics
 		
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		MainMenu Menu = new MainMenu();
@@ -91,7 +94,7 @@ public class MazeGame extends JPanel implements KeyListener{
 		
     }
 
-	public static void startGame(char enterCode){
+	public static void startGame(char enterCode){ //starts based on type of game '2' timed '3' endless. Called statically
 		switch (enterCode) {
 			case '2' :
 				time = 120;
@@ -114,7 +117,7 @@ public class MazeGame extends JPanel implements KeyListener{
         frame.pack();
 	}
 	
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) { //sets background; paints map
         g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		map.draw(g);
@@ -127,20 +130,20 @@ public class MazeGame extends JPanel implements KeyListener{
 		mainThread.start();
     }
 
-	public static void levelUp(){
+	public static void levelUp(){ //makes bigger map at new level
 		score += (map.size)*(map.size)*100;
 		map = new Map(map.size+1,rand.nextInt(100000),WIDTH,HEIGHT-50, frame);
 		player = map.player;
 		chaserspeed -= 1;
 	}
 	
-	public static void addToLeaderboard(int points){
+	public static void addToLeaderboard(int points){ //called at end of game; what it sounds like
 		try {
 			Scanner inFile = new Scanner(new File("leaderboard.txt"));
 			
-			TableList board = new TableList();
+			TableList board = new TableList(); //leaderboard stored here
 		
-			while (inFile.hasNextLine()){
+			while (inFile.hasNextLine()){ //reads from file to tablelist
 				String name = inFile.nextLine();
 				int score = inFile.nextInt();
 				if (inFile.hasNextLine())

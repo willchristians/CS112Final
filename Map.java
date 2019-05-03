@@ -10,8 +10,8 @@ import java.io.*;
 import javax.imageio.*;
 
 public class Map{
-	public Tile[][] grid;
-	public int size;
+	public Tile[][] grid; //all tiles
+	public int size; //side length of tile matrix
 	public long seed;
 	private Random rand;
 	public int HEIGHT;
@@ -32,9 +32,15 @@ public class Map{
 	}
 	
 	private void build(){
+
+		/*desc:
+		Initializes all the tiles in the map by calling the generate method in the tile class, 
+		pruning dead-end hallways, and constructing the player. Instance method because it uses
+		 instance variables.*/
+
 		for(int i = 0; i<size; i++) //initiallizes all tiles
 			for(int j = 0; j<size; j++)
-				grid[j][i] = new Tile(j,i,-1, frame); //bla
+				grid[j][i] = new Tile(j,i,-1, frame);
 			
 		for(int i = 0; i<size; i++)
 			for(int j = 0; j<size; j++){
@@ -62,7 +68,7 @@ public class Map{
 		genLumTiles(0);
 	}
 	
-	private void genGoal(){
+	private void genGoal(){ //generates goal probabilistically at each tile
 		boolean done = false;
 		
 		for (int i = 0;i<size; i++)			
@@ -77,12 +83,12 @@ public class Map{
 
 	private void genLumTiles(int count){
 
-		if(count < 1 + (int)(.1*size)){
+		if(count < 1 + (int)(.1*size)){ //count < max number of LS based on size of map
 			for(Tile [] tileArray : grid)
 				for(Tile t : tileArray)
 					for(Subtile[] subArray : t.subtiles)
-						for(Subtile sub : subArray)
-							if(sub.show && rand.nextInt(size*size*9) == 1){
+						for(Subtile sub : subArray) //series of for-each loops calls each subtile
+							if(sub.show && rand.nextInt(size*size*9) == 1){ //if at hallway & low-probability
 								sub.makeLS();
 								genLumTiles(count+1);
 								return;
@@ -92,25 +98,23 @@ public class Map{
 	}
 	
 	public void draw(Graphics g){
-		//player.yCoord-2; i<player.yCoord+2 && 
-		//player.xCoord-2; j<player.xCoord+2 &&
-		if(player.isAtLS()){
+		player.initBlindness(g, HEIGHT/size/3);//blindness informs later drawing decisions
+		if(player.isAtLS()){ //look at entire map if we're at an LS
 			for(int i = 0; i<size; i++)
 				for(int j = 0; j<size; j++)
 					if(i>=0 && j>=0) grid[j][i].draw(g,size,HEIGHT,WIDTH);
 		}
-		else{
+		else{ //if not at LS, for speed, only look at some of map
 			for(int i = player.yCoord-2; i<player.yCoord+2 && i<size; i++)
 				for(int j = player.xCoord-2; j<player.xCoord+2 && j<size; j++)
 					if(i>=0 && j>=0) grid[j][i].draw(g,size,HEIGHT,WIDTH);
 		}
-		player.initBlindness(g, HEIGHT/size/3);
 		player.draw(g, frame);
 		player.chaser.draw(g, frame);
 		drawInfo(g);
 	}
 	
-	private void pruneHallways(){
+	private void pruneHallways(){ //prunes dead-end hallways
 		for(int i = 0; i<size; i++)
 			for(int j = 0; j<size; j++)
 				if(grid[i][j].type == 2 && grid[i][j].neighbors()<2) {
@@ -118,7 +122,8 @@ public class Map{
 					grid[i][j].type = 0;
 				}
 	}
-	public void print(){
+
+	public void print(){ //very helpful in debugging. Prints the map.
 		for(int i = 0; i<size; i++) {
 			System.out.println();
 			for(int j = 0; j<size; j++) {
@@ -131,21 +136,20 @@ public class Map{
 		System.out.println();
 	}
 
-	public void drawInfo(Graphics g){
+	public void drawInfo(Graphics g){ //draws our info bar
 		double t = MazeGame.time;
+
 		BufferedImage bar = null;
 		try {
     		bar = ImageIO.read(new File("ImageBar.png"));
 		} 
 		catch(IOException e){};
+		
 		g.drawImage(bar, 0, HEIGHT - 5, WIDTH, 55, this.frame);
-		/*
-		g.setColor(Color.ORANGE);
-		g.fillRect(0, HEIGHT, WIDTH, 50);
-		*/
+
 		Font myFont = new Font("Helvetica", Font.PLAIN, 18);
 		g.setFont(myFont);
-		int minutes = (int)(t/60);
+		int minutes = (int)(t/60); //calculates time
 		t = t%60;
 		String ifZero = "";
 		if (t<10)

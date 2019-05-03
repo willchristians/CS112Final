@@ -3,7 +3,7 @@ public class Queue<T>{
 	
 	public Queue(){}
 	
-	public void add(T elem){
+	public void add(T elem){ //adds element t to back of the queue
 		Node<T> toAdd = new Node<T>(elem);
 		if(this.start == null)
 			this.start = toAdd;
@@ -15,7 +15,7 @@ public class Queue<T>{
 		}
 	}
 	
-	public T pop(){
+	public T pop(){ //removes elem at front of q and returns it
 		if(start == null)
 			return null;
 		else{

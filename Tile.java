@@ -10,21 +10,21 @@ import java.io.*;
 import javax.imageio.*;
 
 public class Tile{
-	public int xPos;
+	public int xPos; //location within matrix
 	public int yPos;
-	public int type;
+	public int type; //0 walls, 1 room, 2 hallways, -1 uninitialized
 	//public int width;
 	
-	public Tile north;
+	public Tile north; //pointers to surrounding tiles
 	public Tile south;
 	public Tile east;
 	public Tile west;
 
-	public static JFrame frame; //added this
+	public static JFrame frame;
 	
 	public Tile(){}
 	
-	public Subtile[][] subtiles;
+	public Subtile[][] subtiles; //within tile, 3x3 matrix
 	
 	public Tile(int x,int y,int t, JFrame frame){
 		xPos = x;
@@ -35,6 +35,13 @@ public class Tile{
 	}
 	
 	public void generate(Random rand, boolean start){
+		/* desc:
+		Called by the map’s build class and recursively calls itself to generate. 
+		If it is the start the boolean will be true, setting the tile as a room and generating neighbors. 
+		If it generates a non-empty square, it generates its neighbors that haven’t already been initialized. 
+		The random parameter allows the map to have a seed that generates everything the same time. 
+		Instance method because it uses instance variables*/
+
 		if(type == -1) { //has not been generated yet
 				int roll = rand.nextInt(20);
 				if (roll < 6) type = 0; //empty 30%
@@ -59,7 +66,7 @@ public class Tile{
 		}
 	}
 	
-	public void initializeSubtiles(){
+	public void initializeSubtiles(){ //sets patter of subtiles so it looks correct
 		switch (type) {
 			case 1 : //room
 				for (int j = 0; j<3; j++)
@@ -74,7 +81,7 @@ public class Tile{
 						subtiles[i][j] = new Subtile(this,i,j,false, frame);
 				subtiles[1][1].show = true;
 				
-				if(this.south != null && this.south.type >0) subtiles[1][2].show = true;
+				if(this.south != null && this.south.type >0) subtiles[1][2].show = true;//tests if we should be a hallway and makes it
 				if(this.north != null && this.north.type >0) subtiles[1][0].show = true;
 				if(this.east != null && this.east.type >0) subtiles[2][1].show = true;
 				if(this.west != null && this.west.type >0) subtiles[0][1].show = true;
@@ -90,10 +97,10 @@ public class Tile{
 	}
 	
 	public void draw(Graphics g, int size, int W, int H){
-		//g.setColor(Color.RED);
+
 		//g.drawString(xPos + ", " + yPos,xPos*W/size + 5,yPos*W/size + 5);
 
-		BufferedImage brick = null;
+		BufferedImage brick = null; //grabs all the images to draw each subtile
 		try {
     		brick = ImageIO.read(new File("brick.jpg"));
 		} 
@@ -111,13 +118,13 @@ public class Tile{
 		} 
 		catch (IOException e){};
 
-		for (int j = 0; j<3; j++)
+		for (int j = 0; j<3; j++) //for each subtile in the tile's subtile matrix
 			for (int i = 0; i<3; i++)
 					if (subtiles[i][j] != null)
-						subtiles[i][j].drawSub(g, size, W, H, brick, c1, c2, frame);
+						subtiles[i][j].drawSub(g, size, W, H, brick, c1, c2, frame); //draws each subtile
 	}
 	
-	public int neighbors(){
+	public int neighbors(){ //if 1 neighbor, we're a dead end. Counts our neighbors.
 		int around = 0;
 		if(this.south != null && this.south.type >0) around++;
 		if(this.north != null && this.north.type >0) around++;
