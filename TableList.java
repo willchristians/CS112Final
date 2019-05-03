@@ -22,7 +22,7 @@ public class TableList{
 					maxPair = p;
 				}
 			}
-			System.out.println ("added " + maxPair.y + " position " + i);
+		//	System.out.println ("added " + maxPair.y + " position " + i);
 			sorted.add(maxPair);
 			list.remove(maxPair);
 		}
