@@ -36,7 +36,10 @@ public class Tile{
 	
 	public void generate(Random rand, boolean start){
 		if(type == -1) { //has not been generated yet
-				type = rand.nextInt(3); //0=empty, 1=room, 2=hall (-1 = unitiallized)
+				int roll = rand.nextInt(20);
+				if (roll < 6) type = 0; //empty 30%
+				else if (roll < 10) type = 1; //room 20%
+				else type = 2; //hall 50%
 				if(type != 0){
 					if (north != null)
 						this.north.generate(rand,false);

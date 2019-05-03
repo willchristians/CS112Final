@@ -21,7 +21,7 @@ public class MazeGame extends JPanel implements KeyListener{
 	public static Map map;
 	public static Player player;
 	public static Random rand = new Random();
-	public static JFrame frame = new JFrame("MazeGame");
+	public static JFrame frame = new JFrame("DUNGEON CRAWL");
 	public static double time;
 	public static double timechange;
 	public static int score;
@@ -42,7 +42,13 @@ public class MazeGame extends JPanel implements KeyListener{
 						score += 5;
 					}
 					if (time<0){
+						MainMenu Menu = new MainMenu();
+						Menu.currentScreen = 'o';
+						frame.setContentPane(Menu);	
+						frame.pack();					
+						Thread.sleep(3000);
 						frame.setVisible(false);
+						
 						MazeGame.addToLeaderboard(score);
 					}
 						
@@ -106,7 +112,6 @@ public class MazeGame extends JPanel implements KeyListener{
 		MazeGame mainInstance = new MazeGame();
         frame.setContentPane(mainInstance);
         frame.pack();
-        frame.setVisible(true);
 	}
 	
 	public void paintComponent(Graphics g) {

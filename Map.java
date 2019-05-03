@@ -67,27 +67,27 @@ public class Map{
 		
 		for (int i = 0;i<size; i++)			
 			for(int j = 0; j<size; j++)
-				if(rand.nextInt(size/4+1) == 0 && grid[i][j].type == 1){
-					grid[i][j].subtiles[1][1].makeGoal();
+				if(rand.nextInt(size/4+1) == 0 && grid[j][i].type == 1){
+					grid[j][i].subtiles[1][1].makeGoal();
 					return;
 				}
 				
 		genGoal();
 	}
 
-	public void genLumTiles(int count){
+	private void genLumTiles(int count){
 
-	if(count < 1 + (int)(.1*size)){
-		for(Tile [] tileArray : grid)
-			for(Tile t : tileArray)
-				for(Subtile[] subArray : t.subtiles)
-					for(Subtile sub : subArray)
-						if(sub.show && rand.nextInt(200) == 1){
-							sub.makeLS();
-							genLumTiles(count+1);
-							return;
-						}
-	}
+		if(count < 1 + (int)(.1*size)){
+			for(Tile [] tileArray : grid)
+				for(Tile t : tileArray)
+					for(Subtile[] subArray : t.subtiles)
+						for(Subtile sub : subArray)
+							if(sub.show && rand.nextInt(size*size*9) == 1){
+								sub.makeLS();
+								genLumTiles(count+1);
+								return;
+							}
+		}
 		
 	}
 	
@@ -147,10 +147,14 @@ public class Map{
 		g.setFont(myFont);
 		int minutes = (int)(t/60);
 		t = t%60;
-		String sTime = minutes + " minutes and " + (int)t + " seconds";
+		String ifZero = "";
+		if (t<10)
+			ifZero = "0";
+		String sTime = "Time: " + minutes + ":" + ifZero + (int)t;
 		g.setColor(Color.BLACK);
 		g.drawString(sTime, 10, HEIGHT + 30);
-		g.drawString("Score: " + MazeGame.score, 500, HEIGHT + 30);
+		g.drawString("Level: " + (size - 2), 350, HEIGHT + 30);
+		g.drawString("Score: " + MazeGame.score, 650, HEIGHT + 30);
 	}
 
 }

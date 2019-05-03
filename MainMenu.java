@@ -73,6 +73,13 @@ public class MainMenu extends JPanel implements KeyListener{
 				g.drawImage(img, 0, 0, this);
 				printLeaderboard(g);
 				break;
+				
+			case 'o' : //game over
+				try {
+				img = ImageIO.read(new File("gameover.jpg"));				
+				} catch (IOException e){};
+				g.drawImage(img, 0, 0, this);
+				break;
 		}
 	}
 	
@@ -102,7 +109,7 @@ public class MainMenu extends JPanel implements KeyListener{
 				int y = 200 + 35*i;
 				Pair p = board.get(i);
 				
-				String s1 = String.format("%5d. %-16s",i,p.x);
+				String s1 = String.format("%5d. %-16s",i+1,p.x);
 				String s2 = "" + p.y;
 				g.drawString(s1, 180, y);
 				g.drawString(s2, WIDTH - 200 - fontMetrics.stringWidth(s2), y);

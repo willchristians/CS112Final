@@ -10,22 +10,25 @@ public class TableList{
 	}
 	
 	public void sort(){
-
-		@SuppressWarnings("unchecked")
-		ArrayList<Pair> toSort = (ArrayList<Pair>)list.clone();
 		
-		for(int i = 0; i<list.size(); i++){
-			int max = toSort.get(0).y;
-			Pair maxPair = toSort.get(0);
-			for(Pair p : toSort){
+		ArrayList<Pair> sorted = new ArrayList<Pair>();
+		int times = list.size();
+		for(int i = 0; i<times && i<10; i++){
+			int max = list.get(0).y;
+			Pair maxPair = list.get(0);
+			for(Pair p : list){
 				if(p.y > max){
 					max = p.y;
 					maxPair = p;
 				}
 			}
-			list.set(i,maxPair);
-			toSort.remove(maxPair);
+			System.out.println ("added " + maxPair.y + " position " + i);
+			sorted.add(maxPair);
+			list.remove(maxPair);
 		}
+		
+		list = sorted;
+		
 	}
 	
 	public Pair get(int i){
