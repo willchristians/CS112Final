@@ -16,7 +16,7 @@ public class Subtile extends Tile {
 
 	public static JFrame frame;
 
-	public int blindness = 0; //0 for all bright, 1 for dim, 2 for black
+	public int blindness = 1; //0 for all bright, 1 for dim, 2 for black
 	public boolean isLS = false; //is Light Subtile; lights up the whole maze
 
 	public Color moss = new Color(19, 143, 91, 100);
@@ -84,7 +84,7 @@ public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, Buf
 
 
 
-	public void drawCarpet(int xPix, int yPix, int width, BufferedImage c1, BufferedImage c2, JFrame frame, Graphics g){ //draws a carpet
+	private void drawCarpet(int xPix, int yPix, int width, BufferedImage c1, BufferedImage c2, JFrame frame, Graphics g){ //draws a carpet
 		int whereX = xPix; //where teeny carpet tile is at
 		int whereY = yPix;
 		BufferedImage carpet = c1; //first teeny carpet tile
@@ -102,7 +102,7 @@ public void drawSub(Graphics g, int size, int W, int H, BufferedImage brick, Buf
 	}
 
 
-	public BufferedImage changeCarpet(BufferedImage carpet, BufferedImage c1, BufferedImage c2){ //just changes image we're drawing for carpet
+	private BufferedImage changeCarpet(BufferedImage carpet, BufferedImage c1, BufferedImage c2){ //just changes image we're drawing for carpet
 		if(carpet == c1) carpet = c2;
 		else carpet = c1;
 		return carpet;

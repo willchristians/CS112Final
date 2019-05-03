@@ -137,7 +137,7 @@ public class MazeGame extends JPanel implements KeyListener{
 		chaserspeed -= 1;
 	}
 	
-	public static void addToLeaderboard(int points){ //called at end of game; what it sounds like
+	private static void addToLeaderboard(int points){ //called at end of game; what it sounds like
 		try {
 			Scanner inFile = new Scanner(new File("leaderboard.txt"));
 			

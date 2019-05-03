@@ -136,7 +136,7 @@ public class Map{
 		System.out.println();
 	}
 
-	public void drawInfo(Graphics g){ //draws our info bar
+	private void drawInfo(Graphics g){ //draws our info bar
 		double t = MazeGame.time;
 
 		BufferedImage bar = null;
@@ -144,7 +144,7 @@ public class Map{
     		bar = ImageIO.read(new File("ImageBar.png"));
 		} 
 		catch(IOException e){};
-		
+
 		g.drawImage(bar, 0, HEIGHT - 5, WIDTH, 55, this.frame);
 
 		Font myFont = new Font("Helvetica", Font.PLAIN, 18);

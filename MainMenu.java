@@ -83,7 +83,7 @@ public class MainMenu extends JPanel implements KeyListener{
 		}
 	}
 	
-	public void printLeaderboard(Graphics g){ //print a file on the screen
+	private void printLeaderboard(Graphics g){ //print a file on the screen
 		
 		try {
 			Scanner inFile = new Scanner(new File("leaderboard.txt"));
