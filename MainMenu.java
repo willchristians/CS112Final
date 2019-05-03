@@ -126,20 +126,20 @@ public class MainMenu extends JPanel implements KeyListener{
 		if (currentScreen == 'm') {
 			switch(c) {
 				case '1' :
-					System.out.println("viewing how to play");
+					//System.out.println("viewing how to play");
 					currentScreen = 'h';
 					repaint();
 					break;
 				case '2' :
-					System.out.println("Starting 2 minute game");
+					//System.out.println("Starting 2 minute game");
 					MazeGame.startGame(c);
 					break;
 				case '3' :
-					System.out.println("Starting endless game");
+					//System.out.println("Starting endless game");
 					MazeGame.startGame(c);
 					break;
 				case '4' :
-					System.out.println("Viewing leaderboards");
+					//System.out.println("Viewing leaderboards");
 					currentScreen = 'l';
 					repaint();
 					break;
